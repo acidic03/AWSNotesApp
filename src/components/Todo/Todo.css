@@ -1,0 +1,21 @@
+.todo {
+    position: relative;
+    background-color: rgb(71, 71, 71);
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    padding-top: 0.4em;
+    margin: 1em 0;
+}
+
+.todo-mark {
+    position: absolute;
+    left: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.todo-mark > input {
+    width: 16px;
+    height: 16px;
+}

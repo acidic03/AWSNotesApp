@@ -1,0 +1,14 @@
+.todos-container {
+    /* display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; */
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0 auto;
+    max-width: 400px;
+}
+
+.title {
+    text-decoration: underline;
+}
