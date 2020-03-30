@@ -2,48 +2,44 @@ import React, { useState, useEffect } from 'react';
 import TodoInput from './components/TodoInput/TodoInput';
 import Todo from './components/Todo/Todo';
 import Footer from './components/Footer/Footer';
-import { v4 as uuidv4} from 'uuid';
 import './App.css';
 
 
-
 function App() {
-  // const [todos, setTodos] = useState([
-  //   {
-  //     id: uuidv4(),
-  //     text: "Learn about react",
-  //     isCompleted: false
-  //   },
-  //   {
-  //     id: uuidv4(),
-  //     text: "Learn about vue js",
-  //     isCompleted: false
-  //   },
-  //   {
-  //     id: uuidv4(),
-  //     text: "Learn about amgular",
-  //     isCompleted: false
-  //   }
-  // ]);
-
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
     getTodos();
   }, []);  
 
-  const [completedTodos, setCompletedTodos] = useState([]);
 
+  // Add todos
   const addTodo = text => {
-    // call api to add todo
-    console.log("added todo:", text);
     const tempTodo = {
-      id: uuidv4(),
       text,
       isCompleted: false
     };
-    const newTodos = [tempTodo, ...todos];
-    setTodos(newTodos);
+    const url = "https://eupvcmbvv6.execute-api.us-east-2.amazonaws.com/notes-api/add";
+
+    fetch(url, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(tempTodo)
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log("recieved response from add: " + JSON.stringify(data));
+        const newTodos = [data, ...todos];
+        setTodos(newTodos);
+      })
+      .catch(err => {
+        throw err;
+      });
   };
 
   const getTodos = () => {
@@ -55,6 +51,7 @@ function App() {
         return res.json();
       })
       .then(data => {
+        console.log(data);
         const newTodos = [];
         data.forEach(r => {
           let t = {
@@ -72,20 +69,38 @@ function App() {
       })
   };
 
+  // update api to mark todo complete and then delete it from DB
   const completeTodo = (index) => {
-    // update api to mark todo complete
-    const newCompleted = [...completedTodos, todos[index]];
+    const todoToDelete = todos[index];
+    const url = `https://eupvcmbvv6.execute-api.us-east-2.amazonaws.com/notes-api/add?id=${todoToDelete.id}`;
+
+    fetch(url, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log("removed todo: " + todoToDelete.text);
+
+      })
+      .catch(err => {
+        throw err;
+      });
+
     removeTodo(index);
-    setCompletedTodos(newCompleted);
   };
 
+  // removes todos locally without making another GET request
   const removeTodo = (index) => {
-    // call api to remove todo
     const newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodos(newTodos);
   };
-
 
   return(
     <div>
@@ -104,7 +119,7 @@ function App() {
       )}
       
       <div className="todos-container">
-      { todos.map((todo, index) => 
+        { todos.map((todo, index) => 
           <Todo key={todo.id} index={index} todo={todo} completeTodo={completeTodo} />
         ) }
       </div>
