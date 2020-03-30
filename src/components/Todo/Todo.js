@@ -4,22 +4,23 @@ import 'animate.css';
 
 function Todo({index, todo, completeTodo}) {
 
-    const handleClick = () => {
+    const handleClick = (ele) => {
         if (completeTodo) {
-            completeTodo(index);
+            document.getElementById(todo.id).classList.add("fadeOutDown");
+            setTimeout(completeTodo, 600, index);
         }
     }
 
     let checkbox = 
         <label className="control control-checkbox">
-            <input type="checkbox" onClick={handleClick} />
+            <input type="checkbox" onClick={(ele) => handleClick(ele)} />
             <div className="control_indicator"></div>
         </label>
     ;
     
     if (todo) {
         return(
-            <div className="todo animated fadeInRight">
+            <div id={todo.id} className="todo animated fadeInRight">
                 {completeTodo ? checkbox : ""}
                 <p>{ todo.text }</p>
             </div>

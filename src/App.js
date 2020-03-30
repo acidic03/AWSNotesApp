@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TodoInput from './components/TodoInput/TodoInput';
 import Todo from './components/Todo/Todo';
 import Footer from './components/Footer/Footer';
@@ -8,36 +8,69 @@ import './App.css';
 
 
 function App() {
-  const [todos, setTodos] = useState([
-    {
-      id: uuidv4(),
-      text: "Learn about react",
-      isCompleted: false
-    },
-    {
-      id: uuidv4(),
-      text: "Learn about vue js",
-      isCompleted: false
-    },
-    {
-      id: uuidv4(),
-      text: "Learn about amgular",
-      isCompleted: false
-    }
-  ]);
+  // const [todos, setTodos] = useState([
+  //   {
+  //     id: uuidv4(),
+  //     text: "Learn about react",
+  //     isCompleted: false
+  //   },
+  //   {
+  //     id: uuidv4(),
+  //     text: "Learn about vue js",
+  //     isCompleted: false
+  //   },
+  //   {
+  //     id: uuidv4(),
+  //     text: "Learn about amgular",
+  //     isCompleted: false
+  //   }
+  // ]);
+
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    getTodos();
+  }, []);  
 
   const [completedTodos, setCompletedTodos] = useState([]);
 
   const addTodo = text => {
     // call api to add todo
     console.log("added todo:", text);
-    const newTodos = [{text, id: uuidv4()}, ...todos];
+    const tempTodo = {
+      id: uuidv4(),
+      text,
+      isCompleted: false
+    };
+    const newTodos = [tempTodo, ...todos];
     setTodos(newTodos);
   };
 
-  // const getTodos = () => {
-  //   // call api to get all todos
-  // };
+  const getTodos = () => {
+    // call api to get all todos
+    console.log("getting all todos from api");
+    const url = "https://eupvcmbvv6.execute-api.us-east-2.amazonaws.com/notes-api/todos";
+    fetch(url, {"mode": "cors"})
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        const newTodos = [];
+        data.forEach(r => {
+          let t = {
+            id: r.id,
+            text: r.text,
+            isCompleted: r.is_completed
+          };
+          newTodos.push(t);
+        });
+
+        setTodos(newTodos);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  };
 
   const completeTodo = (index) => {
     // update api to mark todo complete
