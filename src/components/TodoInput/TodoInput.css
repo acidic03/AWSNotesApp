@@ -1,0 +1,27 @@
+.todo-input {
+    display: flex;
+    justify-content: space-between;
+}
+
+.todo-input input[type=text] {
+    width: 86%;
+    min-width: 300px;
+    border: none;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    padding-left: 1em;
+}
+
+.todo-input svg {
+    margin-top: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.todo-input svg:hover {
+    color: royalblue;
+    width: 2em;
+    height: 2em;
+    margin-top: 4px;
+    margin-right: 2px;
+}

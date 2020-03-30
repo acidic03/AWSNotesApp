@@ -1,5 +1,6 @@
 import React from 'react';
 import './Todo.css';
+import 'animate.css';
 
 function Todo({index, todo, completeTodo}) {
 
@@ -10,16 +11,16 @@ function Todo({index, todo, completeTodo}) {
     }
 
     let checkbox = 
-    <div className="todo-mark">
-        <input type="checkbox" name="completed" onClick={handleClick} />
-    </div>
+        <label className="control control-checkbox">
+            <input type="checkbox" onClick={handleClick} />
+            <div className="control_indicator"></div>
+        </label>
     ;
     
     if (todo) {
         return(
-            <div className="todo">
+            <div className="todo animated fadeInRight">
                 {completeTodo ? checkbox : ""}
-    
                 <p>{ todo.text }</p>
             </div>
         );

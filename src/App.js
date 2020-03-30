@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import TodoInput from './components/TodoInput/TodoInput';
 import Todo from './components/Todo/Todo';
 import Footer from './components/Footer/Footer';
 import { v4 as uuidv4} from 'uuid';
@@ -29,7 +30,8 @@ function App() {
 
   const addTodo = text => {
     // call api to add todo
-    const newTodos = [...todos, {text, id: uuidv4()}];
+    console.log("added todo:", text);
+    const newTodos = [{text, id: uuidv4()}, ...todos];
     setTodos(newTodos);
   };
 
@@ -52,32 +54,30 @@ function App() {
   };
 
 
-  return (
-    <div className="app">
-      <div className="container">
-        
-        <h2 className="text-center title">TASKS</h2>
-        <div className="todos-container">
-          { todos.map((todo, index) => 
-            <Todo key={todo.id} index={index} todo={todo} completeTodo={completeTodo} />
-          ) }
-        </div>
-        
-        <br />
-        <br />
-        <br />
-        <br />
-        
+  return(
+    <div>
+      <div className="app">
+      <h1 className="text-center mb-4">Todo List</h1>
+      <TodoInput addTodo={addTodo} />
+      
+      <br />
 
-        <h2 className="text-center title">COMPLETED</h2>
-        <div className="todos-container">
-          { completedTodos.map((todo, index) => 
-            <Todo key={todo.id} index={index} todo={todo} />
-          ) }
-        </div>
-
+      {todos.length > 1 ? (
+        <p>You have {todos.length} tasks to complete</p>
+      ) : todos.length === 0 ? (
+        <p className="text-center">Awesome! All tasks are completed.</p>
+      ) : (
+        <p>You have {todos.length} task to complete</p>
+      )}
+      
+      <div className="todos-container">
+      { todos.map((todo, index) => 
+          <Todo key={todo.id} index={index} todo={todo} completeTodo={completeTodo} />
+        ) }
       </div>
-      <Footer addTodo={addTodo} />
+    </div>
+
+      <Footer />
     </div>
   );
 }
