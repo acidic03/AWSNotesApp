@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, InputGroup} from 'react-bootstrap';
+import dJSON from 'dirty-json';
 import './Footer.css';
 
 function Footer({addTodo}) {
@@ -11,12 +12,55 @@ function Footer({addTodo}) {
 
     const handleOptionsSubmit = () => {
         if (options.download) {
-            console.log("checkbox checked");
+            
+            const url = "https://eupvcmbvv6.execute-api.us-east-2.amazonaws.com/notes-api/download?type=DOWNLOAD";
+
+            fetch(url, {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                setTimeout(getDownloadLink, 5000, data.token);
+                // getDownloadLink(data.token);
+            })
+            .catch(err => {
+                throw err;
+            })
         }
         setShowOptionsModal(!showOptionsModal);
     };
 
-    
+    const getDownloadLink = (token) => {
+        const dataUrl = `https://eupvcmbvv6.execute-api.us-east-2.amazonaws.com/notes-api/result?token=${token}`;
+        fetch(dataUrl, {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(res => {
+            let data = "";
+            try {
+                data = res.json();
+            } catch(err) {
+                throw err;
+            }
+            return data;
+        })
+        .then(outputData => {
+            console.log(outputData);
+        })
+        .catch(err => {
+            throw err;
+        })
+    }
 
     return(
         <footer className="footer">
