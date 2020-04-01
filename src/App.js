@@ -124,7 +124,7 @@ function App() {
       </div>
     </div>
 
-      <Footer />
+      <Footer todos={todos} />
     </div>
   );
 }
