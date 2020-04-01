@@ -51,7 +51,6 @@ function App() {
         return res.json();
       })
       .then(data => {
-        console.log(data);
         const newTodos = [];
         data.forEach(r => {
           let t = {
@@ -125,7 +124,7 @@ function App() {
       </div>
     </div>
 
-      <Footer />
+      <Footer todos={todos} />
     </div>
   );
 }
