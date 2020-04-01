@@ -70,6 +70,9 @@ function Footer({todos}) {
                 <span className="text-muted options-menu" onClick={handleOptionsDisplay}>
                     Options
                 </span>
+                <span className="footer-title text-muted">
+                    Matthew Cohen
+                </span>
             </div>
             
 

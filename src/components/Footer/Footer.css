@@ -31,3 +31,8 @@
 .options-menu:hover {
     font-weight: bold;
 }
+
+.footer-title {
+    position: absolute;
+    right: 1em;
+}
